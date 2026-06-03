@@ -1,11 +1,15 @@
 import { useState, useEffect } from 'react';
 import { formatDate } from '../utils/helpers';
+import { useAuth } from '../context/AuthContext';
+import { Link } from 'react-router-dom';
 
 interface BlogPost {
   id: string;
   title: string;
   content: string;
   date: string;
+  authorId: string;
+  authorName: string;
 }
 
 export default function Blog() {
@@ -13,6 +17,7 @@ export default function Blog() {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [error, setError] = useState('');
+  const { user } = useAuth();
 
   const STORAGE_KEY = 'blog_posts';
 
@@ -35,6 +40,11 @@ export default function Blog() {
   const handleCreatePost = (e: React.FormEvent) => {
     e.preventDefault();
     
+    if (!user) {
+      setError('Ви повинні увійти, щоб створити пост');
+      return;
+    }
+
     if (!title.trim() || !content.trim()) {
       setError('Назва та текст поста не можуть бути порожніми');
       return;
@@ -45,6 +55,8 @@ export default function Blog() {
       title: title.trim(),
       content: content.trim(),
       date: new Date().toISOString(),
+      authorId: user.id,
+      authorName: user.nickname
     };
 
     const updatedPosts = [newPost, ...posts];
@@ -65,47 +77,53 @@ export default function Blog() {
       <h1 className="text-4xl font-bold mb-8 text-gray-900 dark:text-gray-100">Блог та рецензії</h1>
       
       {/* Форма створення поста */}
-      <div className="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg shadow-sm mb-12">
-        <h2 className="text-2xl font-bold mb-4">Створити новий пост</h2>
-        <form onSubmit={handleCreatePost} className="space-y-4">
-          {error && <div className="text-red-500 text-sm mb-2">{error}</div>}
-          
-          <div>
-            <label htmlFor="title" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-              Назва
-            </label>
-            <input
-              type="text"
-              id="title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Наприклад: Розбір кінцівки фільму Сталкер"
-            />
-          </div>
-          
-          <div>
-            <label htmlFor="content" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-              Текст
-            </label>
-            <textarea
-              id="content"
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-              rows={5}
-              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
-              placeholder="Напишіть ваші думки тут..."
-            />
-          </div>
+      {user ? (
+        <div className="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg shadow-sm mb-12">
+          <h2 className="text-2xl font-bold mb-4">Створити новий пост</h2>
+          <form onSubmit={handleCreatePost} className="space-y-4">
+            {error && <div className="text-red-500 text-sm mb-2">{error}</div>}
+            
+            <div>
+              <label htmlFor="title" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                Назва
+              </label>
+              <input
+                type="text"
+                id="title"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Наприклад: Розбір кінцівки фільму Сталкер"
+              />
+            </div>
+            
+            <div>
+              <label htmlFor="content" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                Текст
+              </label>
+              <textarea
+                id="content"
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+                rows={5}
+                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                placeholder="Напишіть ваші думки тут..."
+              />
+            </div>
 
-          <button
-            type="submit"
-            className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors"
-          >
-            Опублікувати
-          </button>
-        </form>
-      </div>
+            <button
+              type="submit"
+              className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors"
+            >
+              Опублікувати
+            </button>
+          </form>
+        </div>
+      ) : (
+        <div className="mb-12 p-4 bg-blue-50 dark:bg-blue-900/20 text-blue-800 dark:text-blue-300 rounded-lg border border-blue-100 dark:border-blue-800">
+          Увійдіть в акаунт, щоб мати можливість публікувати рецензії у блозі. <Link to="/login" className="font-bold underline">Увійти</Link>
+        </div>
+      )}
 
       {/* Список постів */}
       <div className="space-y-8">
@@ -121,17 +139,21 @@ export default function Blog() {
                   <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-1">
                     {post.title}
                   </h3>
-                  <span className="text-sm text-gray-500 dark:text-gray-400">
-                    {formatDate(post.date)}
-                  </span>
+                  <div className="text-sm text-gray-500 dark:text-gray-400 space-x-2">
+                    <span className="font-medium text-blue-600 dark:text-blue-400">{post.authorName || 'Анонім'}</span>
+                    <span>•</span>
+                    <span>{formatDate(post.date)}</span>
+                  </div>
                 </div>
-                <button
-                  onClick={() => handleDeletePost(post.id)}
-                  className="text-red-500 hover:text-red-700 text-sm font-medium px-3 py-1 bg-red-50 dark:bg-red-900/20 rounded transition-colors"
-                  aria-label="Видалити пост"
-                >
-                  Видалити
-                </button>
+                {user && user.id === post.authorId && (
+                  <button
+                    onClick={() => handleDeletePost(post.id)}
+                    className="text-red-500 hover:text-red-700 text-sm font-medium px-3 py-1 bg-red-50 dark:bg-red-900/20 rounded transition-colors"
+                    aria-label="Видалити пост"
+                  >
+                    Видалити
+                  </button>
+                )}
               </div>
               <div className="prose dark:prose-invert max-w-none">
                 <p className="whitespace-pre-wrap text-gray-700 dark:text-gray-300">

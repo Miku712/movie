@@ -40,7 +40,7 @@ test.describe('UI Navigation and Features', () => {
 
   test('Search in Catalog', async ({ page }) => {
     await page.goto('/');
-    await page.getByRole('link', { name: 'Каталог' }).click();
+    await page.getByRole('link', { name: 'Каталог', exact: true }).click();
     
     await expect(page).toHaveURL(/.*catalog/);
     
@@ -67,8 +67,16 @@ test.describe('UI Navigation and Features', () => {
   });
 
   test('LocalStorage Comments Persistence and User Rating', async ({ page }) => {
-    await page.goto('/#/movie/tt5180504'); // Go to mock witcher
-    
+    // 1. Setup - register a user and login to be able to comment
+    await page.goto('/#/register');
+    await page.getByLabel('Нікнейм').fill('Коментатор');
+    await page.getByLabel('Email').fill('commenter@test.com');
+    await page.getByLabel('Пароль').fill('password123');
+    await page.getByRole('button', { name: 'Зареєструватися' }).click();
+    await expect(page.getByText('Вітаємо, Коментатор!')).toBeVisible();
+
+    // 2. Go to movie
+    await page.goto('/#/movie/tt5180504');
     await expect(page.getByRole('heading', { name: 'Mock Witcher' })).toBeVisible({ timeout: 5000 });
     
     // Check IMDB Rating mock
@@ -78,23 +86,30 @@ test.describe('UI Navigation and Features', () => {
     await page.getByRole('button', { name: 'Оцінити на 5 з 5' }).click();
     
     // Leave a comment
-    await page.getByLabel(/Ваше ім'я/i).fill('Тестувальник Playwright');
     await page.getByLabel(/Коментар/i).fill('Дуже крутий серіал, чекаю новий сезон!');
     await page.getByRole('button', { name: 'Залишити коментар' }).click();
     
+    // Check if the comment shows the user's nickname and text
     const commentText = page.getByText('Дуже крутий серіал, чекаю новий сезон!');
     await expect(commentText).toBeVisible();
+    await expect(page.getByText('Коментатор', { exact: true })).toBeVisible();
     
     // Reload page
     await page.reload();
     
     // Check comment persists
     await expect(commentText).toBeVisible();
-    
-    // Check rating persists (star color class check could be complex, but we know it's saved if no errors)
   });
 
   test('Blog CRUD (Create and Delete Post)', async ({ page }) => {
+    // 1. Setup - register a user and login
+    await page.goto('/#/register');
+    await page.getByLabel('Нікнейм').fill('Блогер');
+    await page.getByLabel('Email').fill('blogger@test.com');
+    await page.getByLabel('Пароль').fill('password123');
+    await page.getByRole('button', { name: 'Зареєструватися' }).click();
+    await expect(page.getByText('Вітаємо, Блогер!')).toBeVisible();
+
     await page.goto('/#/blog');
     
     // Check it's empty
@@ -108,6 +123,7 @@ test.describe('UI Navigation and Features', () => {
     // Check it appeared
     await expect(page.getByRole('heading', { name: 'Мій перший тест-пост' })).toBeVisible();
     await expect(page.getByText('Це текстовий контент для нового блог-поста')).toBeVisible();
+    await expect(page.getByText('Блогер', { exact: true })).toBeVisible();
 
     // Delete it
     await page.getByRole('button', { name: 'Видалити' }).click();

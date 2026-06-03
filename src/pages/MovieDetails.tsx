@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import type { Movie } from '../types';
 import { getMovieDetails } from '../api';
 import CommentsSection from '../components/CommentsSection';
+import { useAuth } from '../context/AuthContext';
 
 const typeLabels: Record<string, string> = {
   movie: 'Фільм',
@@ -16,6 +17,9 @@ export default function MovieDetails() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [userRating, setUserRating] = useState<number>(0);
+  
+  const { user } = useAuth();
+  const [watchlistStatus, setWatchlistStatus] = useState<string>('');
 
   useEffect(() => {
     const fetchMovie = async () => {
@@ -49,11 +53,51 @@ export default function MovieDetails() {
     }
   }, [id]);
 
+  useEffect(() => {
+    if (user && id) {
+      const stored = localStorage.getItem(`watchlist_${user.id}`);
+      if (stored) {
+        try {
+          const watchlist = JSON.parse(stored);
+          const existing = watchlist.find((item: any) => item.movie.id === id);
+          if (existing) {
+            setWatchlistStatus(existing.status);
+          } else {
+            setWatchlistStatus('');
+          }
+        } catch (e) {
+          console.error(e);
+        }
+      }
+    }
+  }, [user, id]);
+
   const handleRating = (rating: number) => {
     setUserRating(rating);
     if (id) {
       localStorage.setItem(`user_rating_${id}`, rating.toString());
     }
+  };
+
+  const handleWatchlistChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    if (!user || !movie) return;
+    const newStatus = e.target.value;
+    setWatchlistStatus(newStatus);
+    
+    const stored = localStorage.getItem(`watchlist_${user.id}`);
+    let watchlist = stored ? JSON.parse(stored) : [];
+    
+    watchlist = watchlist.filter((item: any) => item.movie.id !== movie.id);
+    
+    if (newStatus !== '') {
+      watchlist.push({
+        movie,
+        status: newStatus,
+        addedAt: new Date().toISOString()
+      });
+    }
+    
+    localStorage.setItem(`watchlist_${user.id}`, JSON.stringify(watchlist));
   };
 
   if (isLoading) {
@@ -112,7 +156,26 @@ export default function MovieDetails() {
             )}
           </div>
           
-          <div className="mt-6 bg-gray-50 dark:bg-gray-800 p-4 rounded-lg shadow-sm">
+          {user && (
+            <div className="mt-4">
+              <label htmlFor="watchlist-select" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                Додати до списку:
+              </label>
+              <select
+                id="watchlist-select"
+                value={watchlistStatus}
+                onChange={handleWatchlistChange}
+                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="">-- Не в списку --</option>
+                <option value="plan_to_watch">Планую подивитись</option>
+                <option value="watching">Дивлюсь</option>
+                <option value="watched">Переглянуто</option>
+              </select>
+            </div>
+          )}
+          
+          <div className="mt-4 bg-gray-50 dark:bg-gray-800 p-4 rounded-lg shadow-sm">
             <h3 className="text-lg font-semibold mb-2">Ваша оцінка:</h3>
             <div className="flex gap-2">
               {[1, 2, 3, 4, 5].map((star) => (
