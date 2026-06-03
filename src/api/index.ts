@@ -1,37 +1,53 @@
 import type { Movie } from '../types';
-import { movies } from './mockData';
 
-const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+const API_KEY = 'a29f913e';
+const BASE_URL = 'https://www.omdbapi.com/';
 
-// Random delay between 800ms and 1200ms
-const getRandomDelay = () => Math.floor(Math.random() * 400) + 800;
-
-export const getMovies = async (): Promise<Movie[]> => {
-  await delay(getRandomDelay());
-  return movies;
+export const searchMovies = async (query: string): Promise<Movie[]> => {
+  if (!query.trim()) return [];
+  
+  try {
+    const response = await fetch(`${BASE_URL}?s=${encodeURIComponent(query)}&apikey=${API_KEY}`);
+    const data = await response.json();
+    
+    if (data.Response === 'True' && data.Search) {
+      return data.Search.map((item: any) => ({
+        id: item.imdbID,
+        title: item.Title,
+        type: item.Type,
+        releaseYear: item.Year,
+        coverUrl: item.Poster !== 'N/A' ? item.Poster : 'https://placehold.co/400x600/1e293b/ffffff?text=No+Poster'
+      }));
+    }
+    return [];
+  } catch (error) {
+    console.error('Error fetching movies:', error);
+    throw new Error('Failed to fetch movies');
+  }
 };
 
-export const getMovieById = async (id: string): Promise<Movie> => {
-  await delay(getRandomDelay());
-  const movie = movies.find(m => m.id === id);
-  if (!movie) {
+export const getMovieDetails = async (id: string): Promise<Movie> => {
+  try {
+    const response = await fetch(`${BASE_URL}?i=${encodeURIComponent(id)}&apikey=${API_KEY}`);
+    const data = await response.json();
+
+    if (data.Response === 'True') {
+      return {
+        id: data.imdbID,
+        title: data.Title,
+        type: data.Type,
+        releaseYear: data.Year,
+        coverUrl: data.Poster !== 'N/A' ? data.Poster : 'https://placehold.co/400x600/1e293b/ffffff?text=No+Poster',
+        genre: data.Genre && data.Genre !== 'N/A' ? data.Genre.split(', ') : [],
+        director: data.Director !== 'N/A' ? data.Director : 'Невідомо',
+        description: data.Plot !== 'N/A' ? data.Plot : 'Опис відсутній',
+        rating: data.imdbRating !== 'N/A' ? data.imdbRating : undefined
+      };
+    }
     throw new Error('Not found');
+  } catch (error: any) {
+    console.error('Error fetching movie details:', error);
+    if (error.message === 'Not found') throw error;
+    throw new Error('Failed to fetch movie details');
   }
-  return movie;
-};
-
-export const getMoviesByFilter = async (searchTerm: string, type?: string): Promise<Movie[]> => {
-  await delay(getRandomDelay());
-  let filtered = movies;
-
-  if (searchTerm) {
-    const term = searchTerm.toLowerCase();
-    filtered = filtered.filter(m => m.title.toLowerCase().includes(term));
-  }
-
-  if (type) {
-    filtered = filtered.filter(m => m.type === type);
-  }
-
-  return filtered;
 };

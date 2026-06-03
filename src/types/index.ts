@@ -1,11 +1,11 @@
 export interface Movie {
   id: string;
   title: string;
-  type: 'movie' | 'series' | 'anime';
-  genre: string[];
-  releaseYear: number;
-  director: string;
-  description: string;
-  rating: number;
+  type: string;
+  releaseYear: string;
   coverUrl: string;
+  genre?: string[];
+  director?: string;
+  description?: string;
+  rating?: string;
 }

@@ -1,4 +1,4 @@
-import { validateEmail, formatDate, filterMedia } from '../../utils/helpers';
+import { validateEmail, formatDate, filterMedia, sortMedia } from '../../utils/helpers';
 import type { Movie } from '../../types';
 
 describe('Helpers', () => {
@@ -20,8 +20,6 @@ describe('Helpers', () => {
     it('should format ISO date string correctly', () => {
       const dateString = '2026-06-03T15:30:00.000Z';
       const formatted = formatDate(dateString);
-      // Примітка: точний результат може залежати від часового поясу середовища тестування.
-      // Але він точно повинен містити "червн" (або "червня") та "2026"
       expect(formatted).toMatch(/2026/);
       expect(formatted).toMatch(/червн/i);
     });
@@ -32,57 +30,59 @@ describe('Helpers', () => {
     });
   });
 
-  describe('filterMedia', () => {
+  describe('filterMedia and sortMedia', () => {
     const mockMovies: Movie[] = [
       {
         id: '1',
-        title: 'Володар перснів',
+        title: 'B Movie',
         type: 'movie',
-        genre: ['Фентезі', 'Пригоди'],
-        releaseYear: 2001,
-        director: 'Пітер Джексон',
-        description: 'Опис',
-        rating: 9,
+        releaseYear: '2005',
         coverUrl: 'url1',
       },
       {
         id: '2',
-        title: 'Зошит смерті',
-        type: 'anime',
-        genre: ['Сай-фай', 'Трилер'],
-        releaseYear: 2006,
-        director: 'Тецуро Аракі',
-        description: 'Опис 2',
-        rating: 8.9,
+        title: 'A Series',
+        type: 'series',
+        releaseYear: '2020',
         coverUrl: 'url2',
+      },
+      {
+        id: '3',
+        title: 'C Movie',
+        type: 'movie',
+        releaseYear: '1999',
+        coverUrl: 'url3',
       },
     ];
 
-    it('should return empty array if input array is empty', () => {
-      expect(filterMedia([], 'test')).toEqual([]);
-    });
-
-    it('should filter by title case-insensitive', () => {
-      const result = filterMedia(mockMovies, 'вОлОДар');
-      expect(result.length).toBe(1);
-      expect(result[0].id).toBe('1');
-    });
-
-    it('should filter by genre', () => {
-      const result = filterMedia(mockMovies, '', 'Трилер');
+    it('filterMedia should filter by type', () => {
+      const result = filterMedia(mockMovies, 'series');
       expect(result.length).toBe(1);
       expect(result[0].id).toBe('2');
     });
 
-    it('should filter by both title and genre', () => {
-      const result = filterMedia(mockMovies, 'зошит', 'Трилер');
-      expect(result.length).toBe(1);
-      expect(result[0].id).toBe('2');
+    it('filterMedia should return all if filter is all', () => {
+      const result = filterMedia(mockMovies, 'all');
+      expect(result.length).toBe(3);
     });
 
-    it('should return empty array if no match is found', () => {
-      const result = filterMedia(mockMovies, 'Матриця');
-      expect(result.length).toBe(0);
+    it('sortMedia should sort by year-desc', () => {
+      const result = sortMedia(mockMovies, 'year-desc');
+      expect(result[0].releaseYear).toBe('2020');
+      expect(result[2].releaseYear).toBe('1999');
+    });
+
+    it('sortMedia should sort by year-asc', () => {
+      const result = sortMedia(mockMovies, 'year-asc');
+      expect(result[0].releaseYear).toBe('1999');
+      expect(result[2].releaseYear).toBe('2020');
+    });
+
+    it('sortMedia should sort by alpha-asc', () => {
+      const result = sortMedia(mockMovies, 'alpha-asc');
+      expect(result[0].title).toBe('A Series');
+      expect(result[1].title).toBe('B Movie');
+      expect(result[2].title).toBe('C Movie');
     });
   });
 });

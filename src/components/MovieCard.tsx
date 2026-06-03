@@ -24,9 +24,11 @@ export default function MovieCard({ movie }: MovieCardProps) {
           className="w-full h-full object-cover"
           loading="lazy"
         />
-        <div className="absolute top-2 right-2 bg-black/70 text-yellow-400 font-bold px-2 py-1 rounded text-sm backdrop-blur-sm">
-          ★ {movie.rating}
-        </div>
+        {movie.rating && (
+          <div className="absolute top-2 right-2 bg-black/70 text-yellow-400 font-bold px-2 py-1 rounded text-sm backdrop-blur-sm">
+            ★ {movie.rating}
+          </div>
+        )}
       </div>
       <div className="p-4">
         <div className="flex justify-between items-start mb-2">

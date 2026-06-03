@@ -15,7 +15,8 @@ export default {
           lib: ["dom", "es2020"],
           jsx: "react-jsx",
           esModuleInterop: true,
-          allowJs: true
+          allowJs: true,
+          types: ["jest"]
         },
       },
     ],

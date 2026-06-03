@@ -1,21 +1,26 @@
 import { useState, useEffect } from 'react';
 import type { Movie } from '../types';
-import { getMoviesByFilter } from '../api';
+import { searchMovies } from '../api';
 import MovieCard from '../components/MovieCard';
 import SkeletonCard from '../components/SkeletonCard';
+import { filterMedia, sortMedia } from '../utils/helpers';
 
 export default function Catalog() {
   const [movies, setMovies] = useState<Movie[]>([]);
+  const [displayedMovies, setDisplayedMovies] = useState<Movie[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [searchTerm, setSearchTerm] = useState<string>('');
+  
+  const [searchTerm, setSearchTerm] = useState<string>('Star');
+  const [typeFilter, setTypeFilter] = useState<string>('all');
+  const [sortBy, setSortBy] = useState<string>('default');
 
   useEffect(() => {
     const fetchMovies = async () => {
       setIsLoading(true);
       setError(null);
       try {
-        const data = await getMoviesByFilter(searchTerm);
+        const data = await searchMovies(searchTerm || 'Star');
         setMovies(data);
       } catch (err) {
         setError('Не вдалося завантажити каталог фільмів. Спробуйте пізніше.');
@@ -24,33 +29,32 @@ export default function Catalog() {
       }
     };
 
-    // Debounce search slightly
     const timer = setTimeout(() => {
       fetchMovies();
-    }, 300);
+    }, 500);
 
     return () => clearTimeout(timer);
   }, [searchTerm]);
 
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(e.target.value);
-  };
+  useEffect(() => {
+    let result = filterMedia(movies, typeFilter);
+    result = sortMedia(result, sortBy);
+    setDisplayedMovies(result);
+  }, [movies, typeFilter, sortBy]);
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-8">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
         <h1 className="text-3xl font-bold">Каталог кіно</h1>
         
-        <div className="w-full md:w-1/3">
-          <label htmlFor="search" className="sr-only">Пошук за назвою</label>
+        <div className="w-full md:w-auto flex flex-col sm:flex-row gap-4">
           <div className="relative">
             <input
               type="text"
-              id="search"
               value={searchTerm}
-              onChange={handleSearchChange}
-              placeholder="Шукати фільм, серіал, аніме..."
-              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-shadow"
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="Пошук OMDb..."
+              className="w-full sm:w-64 px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             {searchTerm && (
               <button
@@ -62,6 +66,29 @@ export default function Catalog() {
               </button>
             )}
           </div>
+
+          <select
+            value={typeFilter}
+            onChange={(e) => setTypeFilter(e.target.value)}
+            className="px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="all">Усі типи</option>
+            <option value="movie">Фільми</option>
+            <option value="series">Серіали</option>
+            <option value="episode">Епізоди</option>
+          </select>
+
+          <select
+            value={sortBy}
+            onChange={(e) => setSortBy(e.target.value)}
+            className="px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="default">Сортування</option>
+            <option value="year-desc">Спочатку нові</option>
+            <option value="year-asc">Спочатку старі</option>
+            <option value="alpha-asc">А-Я</option>
+            <option value="alpha-desc">Я-А</option>
+          </select>
         </div>
       </div>
 
@@ -73,25 +100,19 @@ export default function Catalog() {
 
       {isLoading ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {Array.from({ length: 6 }).map((_, i) => (
+          {Array.from({ length: 8 }).map((_, i) => (
             <SkeletonCard key={i} />
           ))}
         </div>
-      ) : movies.length > 0 ? (
+      ) : displayedMovies.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {movies.map((movie) => (
+          {displayedMovies.map((movie) => (
             <MovieCard key={movie.id} movie={movie} />
           ))}
         </div>
       ) : (
         <div className="text-center py-12 text-gray-500 dark:text-gray-400">
           <p className="text-lg">За вашим запитом нічого не знайдено.</p>
-          <button 
-            onClick={() => setSearchTerm('')}
-            className="mt-4 text-blue-600 hover:underline"
-          >
-            Скинути пошук
-          </button>
         </div>
       )}
     </div>

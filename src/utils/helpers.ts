@@ -8,7 +8,6 @@ export const validateEmail = (email: string): boolean => {
 export const formatDate = (dateString: string): string => {
   try {
     const date = new Date(dateString);
-    // Якщо дата невалідна (наприклад пустий рядок або "invalid"), Date вертає Invalid Date
     if (isNaN(date.getTime())) {
       return '';
     }
@@ -25,19 +24,40 @@ export const formatDate = (dateString: string): string => {
   }
 };
 
-export const filterMedia = (movies: Movie[], searchTerm: string, genre?: string): Movie[] => {
+export const filterMedia = (movies: Movie[], typeFilter?: string): Movie[] => {
   if (!movies || movies.length === 0) return [];
   
   let result = movies;
 
-  if (searchTerm) {
-    const term = searchTerm.toLowerCase();
-    result = result.filter(m => m.title.toLowerCase().includes(term));
+  if (typeFilter && typeFilter !== 'all') {
+    result = result.filter(m => m.type.toLowerCase() === typeFilter.toLowerCase());
   }
 
-  if (genre) {
-    result = result.filter(m => m.genre.includes(genre));
-  }
+  return result;
+};
+
+export const sortMedia = (movies: Movie[], sortBy: string): Movie[] => {
+  if (!movies || movies.length === 0) return [];
+
+  const result = [...movies];
+
+  result.sort((a, b) => {
+    if (sortBy === 'year-desc' || sortBy === 'year-asc') {
+      const yearA = parseInt(a.releaseYear) || 0;
+      const yearB = parseInt(b.releaseYear) || 0;
+      return sortBy === 'year-desc' ? yearB - yearA : yearA - yearB;
+    }
+    
+    if (sortBy === 'alpha-asc') {
+      return a.title.localeCompare(b.title);
+    }
+    
+    if (sortBy === 'alpha-desc') {
+      return b.title.localeCompare(a.title);
+    }
+
+    return 0;
+  });
 
   return result;
 };
