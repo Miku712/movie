@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import type { Movie } from '../types';
-import { getMovies, getMoviesByFilter } from '../api';
+import { getMoviesByFilter } from '../api';
 import MovieCard from '../components/MovieCard';
 import SkeletonCard from '../components/SkeletonCard';
 
