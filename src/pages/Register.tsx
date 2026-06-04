@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../hooks/useAuth';
 
 export default function Register() {
   const [nickname, setNickname] = useState('');
@@ -34,13 +34,20 @@ export default function Register() {
 
   return (
     <div className="max-w-md mx-auto mt-12 bg-white dark:bg-gray-800 p-8 rounded-xl shadow-md border border-gray-100 dark:border-gray-700">
-      <h1 className="text-3xl font-bold mb-6 text-center text-gray-900 dark:text-gray-100">Реєстрація</h1>
-      
+      <h1 className="text-3xl font-bold mb-6 text-center text-gray-900 dark:text-gray-100">
+        Реєстрація
+      </h1>
+
       {error && <div className="bg-red-100 text-red-700 p-3 rounded-lg mb-4">{error}</div>}
-      
+
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label htmlFor="nickname" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Нікнейм</label>
+          <label
+            htmlFor="nickname"
+            className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+          >
+            Нікнейм
+          </label>
           <input
             type="text"
             id="nickname"
@@ -52,7 +59,12 @@ export default function Register() {
         </div>
 
         <div>
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email</label>
+          <label
+            htmlFor="email"
+            className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+          >
+            Email
+          </label>
           <input
             type="email"
             id="email"
@@ -62,9 +74,14 @@ export default function Register() {
             className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 focus:ring-2 focus:ring-blue-500"
           />
         </div>
-        
+
         <div>
-          <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Пароль</label>
+          <label
+            htmlFor="password"
+            className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+          >
+            Пароль
+          </label>
           <input
             type="password"
             id="password"
@@ -83,9 +100,12 @@ export default function Register() {
           {isSubmitting ? 'Зачекайте...' : 'Зареєструватися'}
         </button>
       </form>
-      
+
       <p className="mt-6 text-center text-gray-600 dark:text-gray-400">
-        Вже маєте акаунт? <Link to="/login" className="text-blue-600 hover:underline">Увійти</Link>
+        Вже маєте акаунт?{' '}
+        <Link to="/login" className="text-blue-600 hover:underline">
+          Увійти
+        </Link>
       </p>
     </div>
   );

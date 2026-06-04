@@ -11,7 +11,7 @@ export const formatDate = (dateString: string): string => {
     if (isNaN(date.getTime())) {
       return '';
     }
-    
+
     return new Intl.DateTimeFormat('uk-UA', {
       day: 'numeric',
       month: 'long',
@@ -26,11 +26,11 @@ export const formatDate = (dateString: string): string => {
 
 export const filterMedia = (movies: Movie[], typeFilter?: string): Movie[] => {
   if (!movies || movies.length === 0) return [];
-  
+
   let result = movies;
 
   if (typeFilter && typeFilter !== 'all') {
-    result = result.filter(m => m.type.toLowerCase() === typeFilter.toLowerCase());
+    result = result.filter((m) => m.type.toLowerCase() === typeFilter.toLowerCase());
   }
 
   return result;
@@ -47,11 +47,11 @@ export const sortMedia = (movies: Movie[], sortBy: string): Movie[] => {
       const yearB = parseInt(b.releaseYear) || 0;
       return sortBy === 'year-desc' ? yearB - yearA : yearA - yearB;
     }
-    
+
     if (sortBy === 'alpha-asc') {
       return a.title.localeCompare(b.title);
     }
-    
+
     if (sortBy === 'alpha-desc') {
       return b.title.localeCompare(a.title);
     }

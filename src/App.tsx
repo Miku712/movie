@@ -21,11 +21,14 @@ function App() {
         <Route path="contacts" element={<Contacts />} />
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />
-        <Route path="watchlist" element={
-          <ProtectedRoute>
-            <Watchlist />
-          </ProtectedRoute>
-        } />
+        <Route
+          path="watchlist"
+          element={
+            <ProtectedRoute>
+              <Watchlist />
+            </ProtectedRoute>
+          }
+        />
       </Route>
     </Routes>
   );

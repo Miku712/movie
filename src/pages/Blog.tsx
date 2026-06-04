@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { formatDate } from '../utils/helpers';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../hooks/useAuth';
 import { Link } from 'react-router-dom';
 
 interface BlogPost {
@@ -39,7 +39,7 @@ export default function Blog() {
 
   const handleCreatePost = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!user) {
       setError('Ви повинні увійти, щоб створити пост');
       return;
@@ -56,35 +56,38 @@ export default function Blog() {
       content: content.trim(),
       date: new Date().toISOString(),
       authorId: user.id,
-      authorName: user.nickname
+      authorName: user.nickname,
     };
 
     const updatedPosts = [newPost, ...posts];
     savePosts(updatedPosts);
-    
+
     setTitle('');
     setContent('');
     setError('');
   };
 
   const handleDeletePost = (id: string) => {
-    const updatedPosts = posts.filter(post => post.id !== id);
+    const updatedPosts = posts.filter((post) => post.id !== id);
     savePosts(updatedPosts);
   };
 
   return (
     <div className="max-w-4xl mx-auto py-8">
       <h1 className="text-4xl font-bold mb-8 text-gray-900 dark:text-gray-100">Блог та рецензії</h1>
-      
+
       {/* Форма створення поста */}
       {user ? (
         <div className="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg shadow-sm mb-12">
           <h2 className="text-2xl font-bold mb-4">Створити новий пост</h2>
           <form onSubmit={handleCreatePost} className="space-y-4">
             {error && <div className="text-red-500 text-sm mb-2">{error}</div>}
-            
+
             <div>
-              <label htmlFor="title" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label
+                htmlFor="title"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+              >
                 Назва
               </label>
               <input
@@ -96,9 +99,12 @@ export default function Blog() {
                 placeholder="Наприклад: Розбір кінцівки фільму Сталкер"
               />
             </div>
-            
+
             <div>
-              <label htmlFor="content" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label
+                htmlFor="content"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+              >
                 Текст
               </label>
               <textarea
@@ -121,7 +127,10 @@ export default function Blog() {
         </div>
       ) : (
         <div className="mb-12 p-4 bg-blue-50 dark:bg-blue-900/20 text-blue-800 dark:text-blue-300 rounded-lg border border-blue-100 dark:border-blue-800">
-          Увійдіть в акаунт, щоб мати можливість публікувати рецензії у блозі. <Link to="/login" className="font-bold underline">Увійти</Link>
+          Увійдіть в акаунт, щоб мати можливість публікувати рецензії у блозі.{' '}
+          <Link to="/login" className="font-bold underline">
+            Увійти
+          </Link>
         </div>
       )}
 
@@ -133,14 +142,19 @@ export default function Blog() {
           </p>
         ) : (
           posts.map((post) => (
-            <article key={post.id} className="p-6 bg-white dark:bg-gray-900 rounded-lg shadow-sm border border-gray-100 dark:border-gray-800">
+            <article
+              key={post.id}
+              className="p-6 bg-white dark:bg-gray-900 rounded-lg shadow-sm border border-gray-100 dark:border-gray-800"
+            >
               <div className="flex justify-between items-start mb-4">
                 <div>
                   <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-1">
                     {post.title}
                   </h3>
                   <div className="text-sm text-gray-500 dark:text-gray-400 space-x-2">
-                    <span className="font-medium text-blue-600 dark:text-blue-400">{post.authorName || 'Анонім'}</span>
+                    <span className="font-medium text-blue-600 dark:text-blue-400">
+                      {post.authorName || 'Анонім'}
+                    </span>
                     <span>•</span>
                     <span>{formatDate(post.date)}</span>
                   </div>

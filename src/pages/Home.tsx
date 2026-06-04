@@ -14,7 +14,7 @@ export default function Home() {
       // Hardcoded popular IMDB IDs (LOTR, Witcher, Stalker, Matrix)
       const ids = ['tt0120737', 'tt5180504', 'tt0079944', 'tt0133093'];
       try {
-        const promises = ids.map(id => getMovieDetails(id));
+        const promises = ids.map((id) => getMovieDetails(id));
         const movies = await Promise.all(promises);
         setRecommended(movies);
       } catch (error) {
@@ -34,10 +34,11 @@ export default function Home() {
           Шукай, оцінюй та зберігай улюблені фільми!
         </h1>
         <p className="text-lg md:text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
-          Створіть свій ідеальний список перегляду, залишайте відгуки та читайте думки інших кіноманів у нашому блозі.
+          Створіть свій ідеальний список перегляду, залишайте відгуки та читайте думки інших
+          кіноманів у нашому блозі.
         </p>
-        <Link 
-          to="/catalog" 
+        <Link
+          to="/catalog"
           className="inline-block px-8 py-3 bg-white text-blue-700 font-bold rounded-full hover:bg-gray-100 transition-colors shadow-lg hover:shadow-xl transform hover:-translate-y-1"
         >
           Перейти до каталогу

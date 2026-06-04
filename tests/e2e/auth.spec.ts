@@ -1,7 +1,6 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('Auth and Watchlist Flow', () => {
-
   test.beforeEach(async ({ page }) => {
     // Mock OMDb Movie Details API to not rely on real network
     await page.route(/.*omdbapi\.com.*[?&]i=.*/, async (route) => {
@@ -15,7 +14,7 @@ test.describe('Auth and Watchlist Flow', () => {
         Genre: 'Action',
         Director: 'N/A',
         Plot: 'Test Plot',
-        imdbRating: '8.0'
+        imdbRating: '8.0',
       };
       await route.fulfill({ json });
     });

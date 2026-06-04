@@ -5,24 +5,27 @@ const BASE_URL = 'https://www.omdbapi.com/';
 
 export const searchMovies = async (query: string): Promise<Movie[]> => {
   if (!query.trim()) return [];
-  
+
   try {
     const response = await fetch(`${BASE_URL}?s=${encodeURIComponent(query)}&apikey=${API_KEY}`);
     const data = await response.json();
-    
+
     if (data.Response === 'True' && data.Search) {
-      return data.Search.map((item: any) => ({
+      return data.Search.map((item: Record<string, string>) => ({
         id: item.imdbID,
         title: item.Title,
         type: item.Type,
         releaseYear: item.Year,
-        coverUrl: item.Poster !== 'N/A' ? item.Poster : 'https://placehold.co/400x600/1e293b/ffffff?text=No+Poster'
+        coverUrl:
+          item.Poster !== 'N/A'
+            ? item.Poster
+            : 'https://placehold.co/400x600/1e293b/ffffff?text=No+Poster',
       }));
     }
     return [];
   } catch (error) {
     console.error('Error fetching movies:', error);
-    throw new Error('Failed to fetch movies');
+    throw new Error('Failed to fetch movies', { cause: error });
   }
 };
 
@@ -37,17 +40,20 @@ export const getMovieDetails = async (id: string): Promise<Movie> => {
         title: data.Title,
         type: data.Type,
         releaseYear: data.Year,
-        coverUrl: data.Poster !== 'N/A' ? data.Poster : 'https://placehold.co/400x600/1e293b/ffffff?text=No+Poster',
+        coverUrl:
+          data.Poster !== 'N/A'
+            ? data.Poster
+            : 'https://placehold.co/400x600/1e293b/ffffff?text=No+Poster',
         genre: data.Genre && data.Genre !== 'N/A' ? data.Genre.split(', ') : [],
         director: data.Director !== 'N/A' ? data.Director : 'Невідомо',
         description: data.Plot !== 'N/A' ? data.Plot : 'Опис відсутній',
-        rating: data.imdbRating !== 'N/A' ? data.imdbRating : undefined
+        rating: data.imdbRating !== 'N/A' ? data.imdbRating : undefined,
       };
     }
     throw new Error('Not found');
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Error fetching movie details:', error);
-    if (error.message === 'Not found') throw error;
-    throw new Error('Failed to fetch movie details');
+    if (error instanceof Error && error.message === 'Not found') throw error;
+    throw new Error('Failed to fetch movie details', { cause: error });
   }
 };

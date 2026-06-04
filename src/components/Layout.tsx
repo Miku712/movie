@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../hooks/useAuth';
+import logo from '../assets/logo.png';
 
 const pageTitles: Record<string, string> = {
   '/': 'Головна - Веб-Додаток для Кінофанів',
@@ -36,34 +37,61 @@ export default function Layout() {
       <header className="bg-gray-100 dark:bg-gray-800 shadow-md">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center flex-wrap gap-4">
           <Link to="/">
-            <img src="/Group 25.png" alt="Logo" className="h-12" />
+            <img src={logo} alt="Logo" className="h-10 md:h-12 object-contain" />
           </Link>
           <nav>
             <ul className="flex flex-wrap items-center space-x-6">
               <li>
-                <Link to="/" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Головна</Link>
+                <Link
+                  to="/"
+                  className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                >
+                  Головна
+                </Link>
               </li>
               <li>
-                <Link to="/catalog" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Каталог</Link>
+                <Link
+                  to="/catalog"
+                  className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                >
+                  Каталог
+                </Link>
               </li>
               {user && (
                 <li>
-                  <Link to="/watchlist" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Мій список</Link>
+                  <Link
+                    to="/watchlist"
+                    className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                  >
+                    Мій список
+                  </Link>
                 </li>
               )}
               <li>
-                <Link to="/blog" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Блог</Link>
+                <Link
+                  to="/blog"
+                  className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                >
+                  Блог
+                </Link>
               </li>
               <li>
-                <Link to="/contacts" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Контакти</Link>
+                <Link
+                  to="/contacts"
+                  className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                >
+                  Контакти
+                </Link>
               </li>
             </ul>
           </nav>
           <div className="flex items-center space-x-4">
             {user ? (
               <>
-                <span className="font-medium text-gray-700 dark:text-gray-300">Вітаємо, {user.nickname}!</span>
-                <button 
+                <span className="font-medium text-gray-700 dark:text-gray-300">
+                  Вітаємо, {user.nickname}!
+                </span>
+                <button
                   onClick={handleLogout}
                   className="px-4 py-2 bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 hover:bg-red-200 dark:hover:bg-red-900/50 rounded-lg transition-colors"
                 >
@@ -72,8 +100,18 @@ export default function Layout() {
               </>
             ) : (
               <>
-                <Link to="/login" className="px-4 py-2 text-blue-600 dark:text-blue-400 hover:underline">Вхід</Link>
-                <Link to="/register" className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors">Реєстрація</Link>
+                <Link
+                  to="/login"
+                  className="px-4 py-2 text-blue-600 dark:text-blue-400 hover:underline"
+                >
+                  Вхід
+                </Link>
+                <Link
+                  to="/register"
+                  className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
+                >
+                  Реєстрація
+                </Link>
               </>
             )}
           </div>

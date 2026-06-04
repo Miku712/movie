@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import type { Movie } from '../types';
 import { getMovieDetails } from '../api';
 import CommentsSection from '../components/CommentsSection';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../hooks/useAuth';
 
 const typeLabels: Record<string, string> = {
   movie: 'Фільм',
@@ -17,14 +17,14 @@ export default function MovieDetails() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [userRating, setUserRating] = useState<number>(0);
-  
+
   const { user } = useAuth();
   const [watchlistStatus, setWatchlistStatus] = useState<string>('');
 
   useEffect(() => {
     const fetchMovie = async () => {
       if (!id) return;
-      
+
       setIsLoading(true);
       setError(null);
       try {
@@ -87,20 +87,20 @@ export default function MovieDetails() {
     if (!user || !movie) return;
     const newStatus = e.target.value;
     setWatchlistStatus(newStatus);
-    
+
     const stored = localStorage.getItem(`watchlist_${user.id}`);
     let watchlist = stored ? JSON.parse(stored) : [];
-    
+
     watchlist = watchlist.filter((item: any) => item.movie.id !== movie.id);
-    
+
     if (newStatus !== '') {
       watchlist.push({
         movie,
         status: newStatus,
-        addedAt: new Date().toISOString()
+        addedAt: new Date().toISOString(),
       });
     }
-    
+
     localStorage.setItem(`watchlist_${user.id}`, JSON.stringify(watchlist));
   };
 
@@ -126,8 +126,8 @@ export default function MovieDetails() {
         <h2 className="text-2xl font-bold text-red-600 dark:text-red-400 mb-4">
           {error || 'Фільм не знайдено.'}
         </h2>
-        <Link 
-          to="/catalog" 
+        <Link
+          to="/catalog"
           className="inline-block px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors"
         >
           Повернутися до каталогу
@@ -138,8 +138,8 @@ export default function MovieDetails() {
 
   return (
     <article className="max-w-5xl mx-auto">
-      <Link 
-        to="/catalog" 
+      <Link
+        to="/catalog"
         className="inline-block mb-6 text-blue-600 dark:text-blue-400 hover:underline"
       >
         ← Назад до каталогу
@@ -148,8 +148,8 @@ export default function MovieDetails() {
       <div className="flex flex-col md:flex-row gap-8">
         <div className="w-full md:w-1/3 shrink-0">
           <div className="rounded-lg overflow-hidden shadow-lg bg-gray-200 dark:bg-gray-800 aspect-[2/3] relative">
-            <img 
-              src={movie.coverUrl} 
+            <img
+              src={movie.coverUrl}
               alt={`Обкладинка ${movie.title}`}
               className="w-full h-full object-cover"
             />
@@ -159,10 +159,13 @@ export default function MovieDetails() {
               </div>
             )}
           </div>
-          
+
           {user && (
             <div className="mt-4">
-              <label htmlFor="watchlist-select" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label
+                htmlFor="watchlist-select"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+              >
                 Додати до списку:
               </label>
               <select
@@ -178,7 +181,7 @@ export default function MovieDetails() {
               </select>
             </div>
           )}
-          
+
           <div className="mt-4 bg-gray-50 dark:bg-gray-800 p-4 rounded-lg shadow-sm">
             <h3 className="text-lg font-semibold mb-2">Ваша оцінка:</h3>
             <div className="flex gap-2">
@@ -187,7 +190,9 @@ export default function MovieDetails() {
                   key={star}
                   onClick={() => handleRating(star)}
                   className={`text-3xl transition-colors ${
-                    star <= userRating ? 'text-yellow-400' : 'text-gray-300 dark:text-gray-600 hover:text-yellow-200'
+                    star <= userRating
+                      ? 'text-yellow-400'
+                      : 'text-gray-300 dark:text-gray-600 hover:text-yellow-200'
                   }`}
                   aria-label={`Оцінити на ${star} з 5`}
                 >
@@ -202,7 +207,7 @@ export default function MovieDetails() {
           <h1 className="text-4xl font-bold mb-2 text-gray-900 dark:text-gray-100">
             {movie.title}
           </h1>
-          
+
           <div className="flex flex-wrap items-center gap-4 mb-6 text-gray-600 dark:text-gray-400 text-sm">
             <span className="font-medium text-lg">{movie.releaseYear}</span>
             <span>•</span>
@@ -210,14 +215,17 @@ export default function MovieDetails() {
               {typeLabels[movie.type.toLowerCase()] || movie.type}
             </span>
             <span>•</span>
-            <span>Режисер: <span className="font-medium text-gray-900 dark:text-gray-200">{movie.director}</span></span>
+            <span>
+              Режисер:{' '}
+              <span className="font-medium text-gray-900 dark:text-gray-200">{movie.director}</span>
+            </span>
           </div>
 
           {movie.genre && movie.genre.length > 0 && (
             <div className="mb-6 flex flex-wrap gap-2">
               {movie.genre.map((g) => (
-                <span 
-                  key={g} 
+                <span
+                  key={g}
                   className="bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 px-3 py-1 rounded text-sm"
                 >
                   {g}

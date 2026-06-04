@@ -3,13 +3,13 @@ export default function SkeletonCard() {
     <div className="rounded-lg overflow-hidden bg-gray-50 dark:bg-gray-800 shadow-sm animate-pulse">
       {/* Cover Skeleton */}
       <div className="aspect-[2/3] bg-gray-300 dark:bg-gray-700 w-full"></div>
-      
+
       {/* Content Skeleton */}
       <div className="p-4 space-y-3">
         {/* Title skeleton */}
         <div className="h-5 bg-gray-300 dark:bg-gray-700 rounded w-3/4"></div>
         <div className="h-5 bg-gray-300 dark:bg-gray-700 rounded w-1/2"></div>
-        
+
         {/* Metadata skeleton */}
         <div className="flex justify-between pt-2">
           <div className="h-4 bg-gray-300 dark:bg-gray-700 rounded w-12"></div>

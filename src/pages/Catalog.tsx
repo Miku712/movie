@@ -13,21 +13,21 @@ const TOP_RATED_IDS = [
   'tt0111161', // Shawshank Redemption
   'tt0068646', // The Godfather
   'tt0109830', // Forrest Gump
-  'tt0110912'  // Pulp Fiction
+  'tt0110912', // Pulp Fiction
 ];
 
 const GENRE_MOCK_IDS: Record<string, string[]> = {
-  'comedy': ['tt0118715', 'tt0107290', 'tt0104691', 'tt0088763'],
-  'fantasy': ['tt0120737', 'tt0120738', 'tt0120739', 'tt0241527'],
-  'scifi': ['tt0133093', 'tt0816692', 'tt0076759', 'tt0080684'],
-  'drama': ['tt0111161', 'tt0068646', 'tt0109830', 'tt0110912']
+  comedy: ['tt0118715', 'tt0107290', 'tt0104691', 'tt0088763'],
+  fantasy: ['tt0120737', 'tt0120738', 'tt0120739', 'tt0241527'],
+  scifi: ['tt0133093', 'tt0816692', 'tt0076759', 'tt0080684'],
+  drama: ['tt0111161', 'tt0068646', 'tt0109830', 'tt0110912'],
 };
 
 const GENRE_MAPPING: Record<string, string> = {
-  'comedy': 'comedy',
-  'fantasy': 'fantasy',
-  'scifi': 'sci-fi',
-  'drama': 'drama'
+  comedy: 'comedy',
+  fantasy: 'fantasy',
+  scifi: 'sci-fi',
+  drama: 'drama',
 };
 
 export default function Catalog() {
@@ -35,7 +35,7 @@ export default function Catalog() {
   const [displayedMovies, setDisplayedMovies] = useState<Movie[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  
+
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [typeFilter, setTypeFilter] = useState<string>('all');
   const [sortBy, setSortBy] = useState<string>('default');
@@ -53,7 +53,7 @@ export default function Catalog() {
             idsToFetch = GENRE_MOCK_IDS[genreFilter] || TOP_RATED_IDS;
           }
           const detailedMovies = await Promise.all(
-            idsToFetch.map(id => getMovieDetails(id).catch(() => null))
+            idsToFetch.map((id) => getMovieDetails(id).catch(() => null))
           );
           setMovies(detailedMovies.filter((m): m is Movie => m !== null));
         } else {
@@ -62,12 +62,12 @@ export default function Catalog() {
           if (genreFilter !== 'all') {
             // Fetch details to filter by genre
             const detailedData = await Promise.all(
-              data.map(m => getMovieDetails(m.id).catch(() => null))
+              data.map((m) => getMovieDetails(m.id).catch(() => null))
             );
             const validDetailed = detailedData.filter((m): m is Movie => m !== null);
             const targetGenre = GENRE_MAPPING[genreFilter];
-            const filteredByGenre = validDetailed.filter(m => 
-              m.genre && m.genre.some(g => g.toLowerCase() === targetGenre)
+            const filteredByGenre = validDetailed.filter(
+              (m) => m.genre && m.genre.some((g) => g.toLowerCase() === targetGenre)
             );
             setMovies(filteredByGenre);
           } else {
@@ -98,7 +98,7 @@ export default function Catalog() {
     <div className="space-y-6">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
         <h1 className="text-3xl font-bold">Каталог кіно</h1>
-        
+
         <div className="w-full md:w-auto flex flex-col sm:flex-row gap-4 flex-wrap">
           <div className="relative">
             <input
@@ -157,7 +157,10 @@ export default function Catalog() {
       </div>
 
       {error && (
-        <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded mb-6" role="alert">
+        <div
+          className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded mb-6"
+          role="alert"
+        >
           <p>{error}</p>
         </div>
       )}

@@ -13,14 +13,14 @@ const typeLabels: Record<string, string> = {
 
 export default function MovieCard({ movie }: MovieCardProps) {
   return (
-    <Link 
+    <Link
       to={`/movie/${movie.id}`}
       className="group block rounded-lg overflow-hidden bg-gray-50 dark:bg-gray-800 shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
     >
       <div className="relative aspect-[2/3] overflow-hidden bg-gray-200 dark:bg-gray-700">
-        <img 
-          src={movie.coverUrl} 
-          alt={`Обкладинка ${movie.title}`} 
+        <img
+          src={movie.coverUrl}
+          alt={`Обкладинка ${movie.title}`}
           className="w-full h-full object-cover"
           loading="lazy"
         />
