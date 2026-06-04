@@ -21,12 +21,14 @@ test.describe('UI Navigation and Features', () => {
     });
 
     // Mock OMDb Movie Details API
-    await page.route(/.*omdbapi\.com.*[?&]i=.*/, async (route) => {
+    await page.route(/.*omdbapi\.com.*[?&]i=.*/, async (route, request) => {
+      const url = new URL(request.url());
+      const imdbID = url.searchParams.get('i') || 'tt5180504';
       const json = {
         Response: 'True',
         Title: 'Mock Witcher',
         Year: '2019–',
-        imdbID: 'tt5180504',
+        imdbID: imdbID,
         Type: 'series',
         Poster: 'N/A',
         Genre: 'Action, Adventure, Drama',

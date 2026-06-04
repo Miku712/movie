@@ -30,7 +30,7 @@ export default function Home() {
   return (
     <div className="space-y-16">
       <section className="bg-gradient-to-r from-blue-700 to-indigo-800 text-white rounded-2xl p-8 md:p-16 text-center shadow-xl">
-        <h1 className="text-4xl md:text-6xl font-bold mb-6">
+        <h1 className="text-2xl md:text-3xl font-bold mb-6">
           Шукай, оцінюй та зберігай улюблені фільми!
         </h1>
         <p className="text-lg md:text-xl text-blue-100 mb-8 max-w-2xl mx-auto">

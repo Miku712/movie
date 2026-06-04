@@ -54,6 +54,10 @@ export default function MovieDetails() {
   }, [id]);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [id]);
+
+  useEffect(() => {
     if (user && id) {
       const stored = localStorage.getItem(`watchlist_${user.id}`);
       if (stored) {

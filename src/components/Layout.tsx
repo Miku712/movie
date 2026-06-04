@@ -35,8 +35,8 @@ export default function Layout() {
     <div className="min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 flex flex-col">
       <header className="bg-gray-100 dark:bg-gray-800 shadow-md">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center flex-wrap gap-4">
-          <Link to="/" className="text-2xl font-bold text-blue-600 dark:text-blue-400">
-            🎬 MovieLibrary
+          <Link to="/">
+            <img src="/Group 25.png" alt="Logo" className="h-12" />
           </Link>
           <nav>
             <ul className="flex flex-wrap items-center space-x-6">

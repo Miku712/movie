@@ -1,9 +1,34 @@
 import { useState, useEffect } from 'react';
 import type { Movie } from '../types';
-import { searchMovies } from '../api';
+import { searchMovies, getMovieDetails } from '../api';
 import MovieCard from '../components/MovieCard';
 import SkeletonCard from '../components/SkeletonCard';
 import { filterMedia, sortMedia } from '../utils/helpers';
+
+const TOP_RATED_IDS = [
+  'tt0120737', // LOTR: Fellowship
+  'tt0816692', // Interstellar
+  'tt0079944', // Stalker
+  'tt0133093', // Matrix
+  'tt0111161', // Shawshank Redemption
+  'tt0068646', // The Godfather
+  'tt0109830', // Forrest Gump
+  'tt0110912'  // Pulp Fiction
+];
+
+const GENRE_MOCK_IDS: Record<string, string[]> = {
+  'comedy': ['tt0118715', 'tt0107290', 'tt0104691', 'tt0088763'],
+  'fantasy': ['tt0120737', 'tt0120738', 'tt0120739', 'tt0241527'],
+  'scifi': ['tt0133093', 'tt0816692', 'tt0076759', 'tt0080684'],
+  'drama': ['tt0111161', 'tt0068646', 'tt0109830', 'tt0110912']
+};
+
+const GENRE_MAPPING: Record<string, string> = {
+  'comedy': 'comedy',
+  'fantasy': 'fantasy',
+  'scifi': 'sci-fi',
+  'drama': 'drama'
+};
 
 export default function Catalog() {
   const [movies, setMovies] = useState<Movie[]>([]);
@@ -11,17 +36,44 @@ export default function Catalog() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   
-  const [searchTerm, setSearchTerm] = useState<string>('Star');
+  const [searchTerm, setSearchTerm] = useState<string>('');
   const [typeFilter, setTypeFilter] = useState<string>('all');
   const [sortBy, setSortBy] = useState<string>('default');
+  const [genreFilter, setGenreFilter] = useState<string>('all');
 
   useEffect(() => {
     const fetchMovies = async () => {
       setIsLoading(true);
       setError(null);
       try {
-        const data = await searchMovies(searchTerm || 'Star');
-        setMovies(data);
+        if (!searchTerm.trim()) {
+          // If empty, fetch top rated or genre specific
+          let idsToFetch = TOP_RATED_IDS;
+          if (genreFilter !== 'all') {
+            idsToFetch = GENRE_MOCK_IDS[genreFilter] || TOP_RATED_IDS;
+          }
+          const detailedMovies = await Promise.all(
+            idsToFetch.map(id => getMovieDetails(id).catch(() => null))
+          );
+          setMovies(detailedMovies.filter((m): m is Movie => m !== null));
+        } else {
+          // If not empty, search movies
+          const data = await searchMovies(searchTerm);
+          if (genreFilter !== 'all') {
+            // Fetch details to filter by genre
+            const detailedData = await Promise.all(
+              data.map(m => getMovieDetails(m.id).catch(() => null))
+            );
+            const validDetailed = detailedData.filter((m): m is Movie => m !== null);
+            const targetGenre = GENRE_MAPPING[genreFilter];
+            const filteredByGenre = validDetailed.filter(m => 
+              m.genre && m.genre.some(g => g.toLowerCase() === targetGenre)
+            );
+            setMovies(filteredByGenre);
+          } else {
+            setMovies(data);
+          }
+        }
       } catch (err) {
         setError('Не вдалося завантажити каталог фільмів. Спробуйте пізніше.');
       } finally {
@@ -34,7 +86,7 @@ export default function Catalog() {
     }, 500);
 
     return () => clearTimeout(timer);
-  }, [searchTerm]);
+  }, [searchTerm, genreFilter]);
 
   useEffect(() => {
     let result = filterMedia(movies, typeFilter);
@@ -47,7 +99,7 @@ export default function Catalog() {
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
         <h1 className="text-3xl font-bold">Каталог кіно</h1>
         
-        <div className="w-full md:w-auto flex flex-col sm:flex-row gap-4">
+        <div className="w-full md:w-auto flex flex-col sm:flex-row gap-4 flex-wrap">
           <div className="relative">
             <input
               type="text"
@@ -66,6 +118,18 @@ export default function Catalog() {
               </button>
             )}
           </div>
+
+          <select
+            value={genreFilter}
+            onChange={(e) => setGenreFilter(e.target.value)}
+            className="px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="all">Усі жанри</option>
+            <option value="comedy">Комедія</option>
+            <option value="fantasy">Фентезі</option>
+            <option value="scifi">Фантастика</option>
+            <option value="drama">Драма</option>
+          </select>
 
           <select
             value={typeFilter}
