@@ -136,12 +136,13 @@ export default function Blog() {
           </p>
         ) : (
           posts.map((post) => (
-            <article key={post.id} className="p-6 bg-gray-800 rounded-lg shadow-sm border border-gray-700">
+            <article
+              key={post.id}
+              className="p-6 bg-gray-800 rounded-lg shadow-sm border border-gray-700"
+            >
               <div className="flex justify-between items-start mb-4">
                 <div>
-                  <h3 className="text-2xl font-bold text-white mb-1">
-                    {post.title}
-                  </h3>
+                  <h3 className="text-2xl font-bold text-white mb-1">{post.title}</h3>
                   <div className="text-sm text-gray-500 dark:text-gray-400 space-x-2">
                     <span className="font-medium text-blue-600 dark:text-blue-400">
                       {post.authorName || 'Анонім'}
@@ -160,10 +161,8 @@ export default function Blog() {
                   </button>
                 )}
               </div>
-                <div className="prose dark:prose-invert max-w-none">
-                <p className="whitespace-pre-wrap text-gray-300">
-                  {post.content}
-                </p>
+              <div className="prose dark:prose-invert max-w-none">
+                <p className="whitespace-pre-wrap text-gray-300">{post.content}</p>
               </div>
             </article>
           ))

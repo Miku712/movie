@@ -34,9 +34,7 @@ export default function Register() {
 
   return (
     <div className="max-w-md mx-auto mt-12 bg-gray-800 p-8 rounded-xl shadow-md border border-gray-700">
-      <h1 className="text-3xl font-bold mb-6 text-center text-white">
-        Реєстрація
-      </h1>
+      <h1 className="text-3xl font-bold mb-6 text-center text-white">Реєстрація</h1>
 
       {error && <div className="bg-red-900/20 text-red-300 p-3 rounded-lg mb-4">{error}</div>}
 

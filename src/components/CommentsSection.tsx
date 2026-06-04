@@ -105,15 +105,10 @@ export default function CommentsSection({ movieId }: CommentsSectionProps) {
           <p className="text-gray-300">Поки що немає коментарів. Будьте першим!</p>
         ) : (
           comments.map((comment) => (
-            <div
-              key={comment.id}
-              className="p-4 bg-gray-800 rounded-lg border border-gray-700"
-            >
+            <div key={comment.id} className="p-4 bg-gray-800 rounded-lg border border-gray-700">
               <div className="flex justify-between items-center mb-2">
                 <span className="font-bold text-white">{comment.author}</span>
-                <span className="text-xs text-gray-400">
-                  {formatDate(comment.date)}
-                </span>
+                <span className="text-xs text-gray-400">{formatDate(comment.date)}</span>
               </div>
               <p className="text-gray-300 whitespace-pre-wrap">{comment.text}</p>
             </div>

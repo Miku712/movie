@@ -136,7 +136,9 @@ export default function MovieDetails() {
 
   return (
     <article className="max-w-5xl mx-auto">
-      <Link to="/catalog" className="inline-block mb-6 text-indigo-400 hover:underline">← Назад до каталогу</Link>
+      <Link to="/catalog" className="inline-block mb-6 text-indigo-400 hover:underline">
+        ← Назад до каталогу
+      </Link>
 
       <div className="flex flex-col md:flex-row gap-8">
         <div className="w-full md:w-1/3 shrink-0">
@@ -155,7 +157,12 @@ export default function MovieDetails() {
 
           {user && (
             <div className="mt-4">
-              <label htmlFor="watchlist-select" className="block text-sm font-medium text-gray-300 mb-1">Додати до списку:</label>
+              <label
+                htmlFor="watchlist-select"
+                className="block text-sm font-medium text-gray-300 mb-1"
+              >
+                Додати до списку:
+              </label>
               <select
                 id="watchlist-select"
                 value={watchlistStatus}
@@ -178,9 +185,7 @@ export default function MovieDetails() {
                   key={star}
                   onClick={() => handleRating(star)}
                   className={`text-3xl transition-colors ${
-                    star <= userRating
-                      ? 'text-yellow-400'
-                      : 'text-gray-400 hover:text-yellow-200'
+                    star <= userRating ? 'text-yellow-400' : 'text-gray-400 hover:text-yellow-200'
                   }`}
                   aria-label={`Оцінити на ${star} з 5`}
                 >
@@ -202,8 +207,7 @@ export default function MovieDetails() {
             </span>
             <span>•</span>
             <span>
-              Режисер:{' '}
-              <span className="font-medium text-gray-200">{movie.director}</span>
+              Режисер: <span className="font-medium text-gray-200">{movie.director}</span>
             </span>
           </div>
 
