@@ -71,7 +71,7 @@ export default function Catalog() {
             setMovies(data);
           }
         }
-      } catch (err) {
+      } catch {
         setError('Не вдалося завантажити каталог фільмів. Спробуйте пізніше.');
       } finally {
         setIsLoading(false);

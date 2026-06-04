@@ -2,7 +2,6 @@ import { test, expect } from '@playwright/test';
 
 test.describe('UI Navigation and Features', () => {
   test.beforeEach(async ({ page }) => {
-    
     await page.route(/.*omdbapi\.com.*[?&]s=.*/, async (route) => {
       const json = {
         Response: 'True',
@@ -19,7 +18,6 @@ test.describe('UI Navigation and Features', () => {
       await route.fulfill({ json });
     });
 
-    
     await page.route(/.*omdbapi\.com.*[?&]i=.*/, async (route, request) => {
       const url = new URL(request.url());
       const imdbID = url.searchParams.get('i') || 'tt5180504';
@@ -91,15 +89,12 @@ test.describe('UI Navigation and Features', () => {
     await expect(commentText).toBeVisible();
     await expect(page.getByText('Коментатор', { exact: true })).toBeVisible();
 
-    
     await page.reload();
 
-    
     await expect(commentText).toBeVisible();
   });
 
   test('Blog CRUD (Create and Delete Post)', async ({ page }) => {
-    
     await page.goto('/#/register');
     await page.getByLabel('Нікнейм').fill('Блогер');
     await page.getByLabel('Email').fill('blogger@test.com');
@@ -109,23 +104,18 @@ test.describe('UI Navigation and Features', () => {
 
     await page.goto('/#/blog');
 
-    
     await expect(page.getByText('Поки що немає постів')).toBeVisible();
 
-    
     await page.getByLabel(/Назва/i).fill('Мій перший тест-пост');
     await page.getByLabel(/Текст/i).fill('Це текстовий контент для нового блог-поста');
     await page.getByRole('button', { name: 'Опублікувати' }).click();
 
-    
     await expect(page.getByRole('heading', { name: 'Мій перший тест-пост' })).toBeVisible();
     await expect(page.getByText('Це текстовий контент для нового блог-поста')).toBeVisible();
     await expect(page.getByText('Блогер', { exact: true })).toBeVisible();
 
-    
     await page.getByRole('button', { name: 'Видалити' }).click();
 
-    
     await expect(page.getByRole('heading', { name: 'Мій перший тест-пост' })).toBeHidden();
     await expect(page.getByText('Поки що немає постів')).toBeVisible();
   });

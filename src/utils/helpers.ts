@@ -19,7 +19,7 @@ export const formatDate = (dateString: string): string => {
       hour: '2-digit',
       minute: '2-digit',
     }).format(date);
-  } catch (error) {
+  } catch {
     return '';
   }
 };

@@ -11,12 +11,12 @@ export default {
       'ts-jest',
       {
         tsconfig: {
-          target: "es2020",
-          lib: ["dom", "es2020"],
-          jsx: "react-jsx",
+          target: 'es2020',
+          lib: ['dom', 'es2020'],
+          jsx: 'react-jsx',
           esModuleInterop: true,
           allowJs: true,
-          types: ["jest"]
+          types: ['jest'],
         },
       },
     ],
