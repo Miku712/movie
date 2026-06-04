@@ -46,7 +46,7 @@ export default function Contacts() {
 
     setIsSubmitting(true);
 
-    // Імітація запиту
+    
     setTimeout(() => {
       setIsSubmitting(false);
       setIsSuccess(true);
@@ -54,7 +54,7 @@ export default function Contacts() {
       setEmail('');
       setMessage('');
 
-      // Сховати повідомлення про успіх через 5 секунд
+      
       setTimeout(() => setIsSuccess(false), 5000);
     }, 1000);
   };

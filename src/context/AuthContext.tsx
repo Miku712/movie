@@ -25,7 +25,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isLoading] = useState(false);
 
   const register = async (nickname: string, email: string, password: string) => {
-    await delay(500); // Mock network delay
+    await delay(500); 
     const usersStr = localStorage.getItem('users_db');
     const users = usersStr ? JSON.parse(usersStr) : [];
 
@@ -37,7 +37,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       id: crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(),
       nickname,
       email,
-      password, // In a real app, this should be hashed
+      password, 
     };
 
     users.push(newUser);
@@ -49,7 +49,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const login = async (email: string, password: string) => {
-    await delay(500); // Mock network delay
+    await delay(500); 
     const usersStr = localStorage.getItem('users_db');
     const users = usersStr ? JSON.parse(usersStr) : [];
 

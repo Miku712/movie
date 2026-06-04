@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 test.describe('UI Navigation and Features', () => {
   test.beforeEach(async ({ page }) => {
-    // Mock OMDb Search API
+    
     await page.route(/.*omdbapi\.com.*[?&]s=.*/, async (route) => {
       const json = {
         Response: 'True',
@@ -19,7 +19,7 @@ test.describe('UI Navigation and Features', () => {
       await route.fulfill({ json });
     });
 
-    // Mock OMDb Movie Details API
+    
     await page.route(/.*omdbapi\.com.*[?&]i=.*/, async (route, request) => {
       const url = new URL(request.url());
       const imdbID = url.searchParams.get('i') || 'tt5180504';
@@ -68,7 +68,6 @@ test.describe('UI Navigation and Features', () => {
   });
 
   test('LocalStorage Comments Persistence and User Rating', async ({ page }) => {
-    // 1. Setup - register a user and login to be able to comment
     await page.goto('/#/register');
     await page.getByLabel('Нікнейм').fill('Коментатор');
     await page.getByLabel('Email').fill('commenter@test.com');
@@ -76,36 +75,31 @@ test.describe('UI Navigation and Features', () => {
     await page.getByRole('button', { name: 'Зареєструватися' }).click();
     await expect(page.getByText('Вітаємо, Коментатор!')).toBeVisible();
 
-    // 2. Go to movie
     await page.goto('/#/movie/tt5180504');
     await expect(page.getByRole('heading', { name: 'Mock Witcher' })).toBeVisible({
       timeout: 5000,
     });
 
-    // Check IMDB Rating mock
     await expect(page.getByText('IMDb: 8.0')).toBeVisible();
 
-    // Rate 5 stars
     await page.getByRole('button', { name: 'Оцінити на 5 з 5' }).click();
 
-    // Leave a comment
     await page.getByLabel(/Коментар/i).fill('Дуже крутий серіал, чекаю новий сезон!');
     await page.getByRole('button', { name: 'Залишити коментар' }).click();
 
-    // Check if the comment shows the user's nickname and text
     const commentText = page.getByText('Дуже крутий серіал, чекаю новий сезон!');
     await expect(commentText).toBeVisible();
     await expect(page.getByText('Коментатор', { exact: true })).toBeVisible();
 
-    // Reload page
+    
     await page.reload();
 
-    // Check comment persists
+    
     await expect(commentText).toBeVisible();
   });
 
   test('Blog CRUD (Create and Delete Post)', async ({ page }) => {
-    // 1. Setup - register a user and login
+    
     await page.goto('/#/register');
     await page.getByLabel('Нікнейм').fill('Блогер');
     await page.getByLabel('Email').fill('blogger@test.com');
@@ -115,23 +109,23 @@ test.describe('UI Navigation and Features', () => {
 
     await page.goto('/#/blog');
 
-    // Check it's empty
+    
     await expect(page.getByText('Поки що немає постів')).toBeVisible();
 
-    // Create a post
+    
     await page.getByLabel(/Назва/i).fill('Мій перший тест-пост');
     await page.getByLabel(/Текст/i).fill('Це текстовий контент для нового блог-поста');
     await page.getByRole('button', { name: 'Опублікувати' }).click();
 
-    // Check it appeared
+    
     await expect(page.getByRole('heading', { name: 'Мій перший тест-пост' })).toBeVisible();
     await expect(page.getByText('Це текстовий контент для нового блог-поста')).toBeVisible();
     await expect(page.getByText('Блогер', { exact: true })).toBeVisible();
 
-    // Delete it
+    
     await page.getByRole('button', { name: 'Видалити' }).click();
 
-    // Check it disappeared
+    
     await expect(page.getByRole('heading', { name: 'Мій перший тест-пост' })).toBeHidden();
     await expect(page.getByText('Поки що немає постів')).toBeVisible();
   });

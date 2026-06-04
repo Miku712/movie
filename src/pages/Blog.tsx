@@ -76,7 +76,7 @@ export default function Blog() {
     <div className="max-w-4xl mx-auto py-8">
       <h1 className="text-4xl font-bold mb-8 text-white">Блог та рецензії</h1>
 
-      {/* Форма створення поста */}
+      {}
       {user ? (
         <div className="bg-gray-800 p-6 rounded-lg shadow-sm mb-12">
           <h2 className="text-2xl font-bold mb-4">Створити новий пост</h2>
@@ -128,7 +128,7 @@ export default function Blog() {
         </div>
       )}
 
-      {/* Список постів */}
+      {}
       <div className="space-y-8">
         {posts.length === 0 ? (
           <p className="text-center text-gray-500 dark:text-gray-400 text-lg">
