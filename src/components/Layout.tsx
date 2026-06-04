@@ -19,7 +19,6 @@ export default function Layout() {
   const { user, logout } = useAuth();
 
   useEffect(() => {
-    
     if (location.pathname.startsWith('/movie/')) {
       document.title = 'Деталі фільму - Веб-Додаток для Кінофанів';
     } else {

@@ -6,14 +6,14 @@ import SkeletonCard from '../components/SkeletonCard';
 import { filterMedia, sortMedia } from '../utils/helpers';
 
 const TOP_RATED_IDS = [
-  'tt0120737', 
-  'tt0816692', 
-  'tt0079944', 
-  'tt0133093', 
-  'tt0111161', 
-  'tt0068646', 
-  'tt0109830', 
-  'tt0110912', 
+  'tt0120737',
+  'tt0816692',
+  'tt0079944',
+  'tt0133093',
+  'tt0111161',
+  'tt0068646',
+  'tt0109830',
+  'tt0110912',
 ];
 
 const GENRE_MOCK_IDS: Record<string, string[]> = {
@@ -47,7 +47,6 @@ export default function Catalog() {
       setError(null);
       try {
         if (!searchTerm.trim()) {
-          
           let idsToFetch = TOP_RATED_IDS;
           if (genreFilter !== 'all') {
             idsToFetch = GENRE_MOCK_IDS[genreFilter] || TOP_RATED_IDS;
@@ -57,10 +56,8 @@ export default function Catalog() {
           );
           setMovies(detailedMovies.filter((m): m is Movie => m !== null));
         } else {
-          
           const data = await searchMovies(searchTerm);
           if (genreFilter !== 'all') {
-            
             const detailedData = await Promise.all(
               data.map((m) => getMovieDetails(m.id).catch(() => null))
             );

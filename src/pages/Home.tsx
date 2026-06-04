@@ -11,7 +11,6 @@ export default function Home() {
 
   useEffect(() => {
     const fetchRecommended = async () => {
-      
       const ids = ['tt0120737', 'tt5180504', 'tt0079944', 'tt0133093'];
       try {
         const promises = ids.map((id) => getMovieDetails(id));

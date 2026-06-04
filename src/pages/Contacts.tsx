@@ -46,7 +46,6 @@ export default function Contacts() {
 
     setIsSubmitting(true);
 
-    
     setTimeout(() => {
       setIsSubmitting(false);
       setIsSuccess(true);
@@ -54,7 +53,6 @@ export default function Contacts() {
       setEmail('');
       setMessage('');
 
-      
       setTimeout(() => setIsSuccess(false), 5000);
     }, 1000);
   };
