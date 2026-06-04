@@ -33,8 +33,8 @@ export default function Layout() {
   };
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 flex flex-col">
-      <header className="bg-gray-100 dark:bg-gray-800 shadow-md">
+    <div className="min-h-screen bg-gray-900 text-gray-100 flex flex-col">
+      <header className="bg-gray-800 shadow-md">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center flex-wrap gap-4">
           <Link to="/">
             <img src={logo} alt="Logo" className="h-10 md:h-12 object-contain" />
@@ -42,10 +42,7 @@ export default function Layout() {
           <nav>
             <ul className="flex flex-wrap items-center space-x-6">
               <li>
-                <Link
-                  to="/"
-                  className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-                >
+                <Link to="/" className="hover:text-gray-200 transition-colors">
                   Головна
                 </Link>
               </li>
@@ -88,12 +85,10 @@ export default function Layout() {
           <div className="flex items-center space-x-4">
             {user ? (
               <>
-                <span className="font-medium text-gray-700 dark:text-gray-300">
-                  Вітаємо, {user.nickname}!
-                </span>
+                <span className="font-medium text-gray-200">Вітаємо, {user.nickname}!</span>
                 <button
                   onClick={handleLogout}
-                  className="px-4 py-2 bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 hover:bg-red-200 dark:hover:bg-red-900/50 rounded-lg transition-colors"
+                  className="px-4 py-2 bg-red-900/20 text-red-300 hover:bg-red-900/30 rounded-lg transition-colors"
                 >
                   Вийти
                 </button>
@@ -122,7 +117,7 @@ export default function Layout() {
         <Outlet />
       </main>
 
-      <footer className="bg-gray-100 dark:bg-gray-800 text-center py-4 text-sm">
+      <footer className="bg-gray-800 text-center py-4 text-sm text-gray-400">
         <p>&copy; {new Date().getFullYear()} Веб-Додаток для Кінофанів. Усі права захищені.</p>
       </footer>
     </div>

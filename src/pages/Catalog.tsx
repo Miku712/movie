@@ -97,7 +97,7 @@ export default function Catalog() {
   return (
     <div className="space-y-6">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
-        <h1 className="text-3xl font-bold">Каталог кіно</h1>
+        <h1 className="text-3xl font-bold text-white">Каталог кіно</h1>
 
         <div className="w-full md:w-auto flex flex-col sm:flex-row gap-4 flex-wrap">
           <div className="relative">
@@ -106,7 +106,7 @@ export default function Catalog() {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Пошук OMDb..."
-              className="w-full sm:w-64 px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full sm:w-64 px-4 py-2 border border-gray-600 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             {searchTerm && (
               <button
@@ -122,7 +122,7 @@ export default function Catalog() {
           <select
             value={genreFilter}
             onChange={(e) => setGenreFilter(e.target.value)}
-            className="px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="px-4 py-2 border border-gray-600 rounded-lg bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             <option value="all">Усі жанри</option>
             <option value="comedy">Комедія</option>
@@ -134,7 +134,7 @@ export default function Catalog() {
           <select
             value={typeFilter}
             onChange={(e) => setTypeFilter(e.target.value)}
-            className="px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="px-4 py-2 border border-gray-600 rounded-lg bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             <option value="all">Усі типи</option>
             <option value="movie">Фільми</option>
@@ -145,7 +145,7 @@ export default function Catalog() {
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value)}
-            className="px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="px-4 py-2 border border-gray-600 rounded-lg bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             <option value="default">Сортування</option>
             <option value="year-desc">Спочатку нові</option>

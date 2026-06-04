@@ -26,17 +26,14 @@ export default function Login() {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-12 bg-white dark:bg-gray-800 p-8 rounded-xl shadow-md border border-gray-100 dark:border-gray-700">
-      <h1 className="text-3xl font-bold mb-6 text-center text-gray-900 dark:text-gray-100">Вхід</h1>
+    <div className="max-w-md mx-auto mt-12 bg-gray-800 p-8 rounded-xl shadow-md border border-gray-700">
+      <h1 className="text-3xl font-bold mb-6 text-center text-white">Вхід</h1>
 
-      {error && <div className="bg-red-100 text-red-700 p-3 rounded-lg mb-4">{error}</div>}
+      {error && <div className="bg-red-900/20 text-red-300 p-3 rounded-lg mb-4">{error}</div>}
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label
-            htmlFor="email"
-            className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-          >
+          <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-1">
             Email
           </label>
           <input
@@ -45,15 +42,12 @@ export default function Login() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 focus:ring-2 focus:ring-blue-500"
+            className="w-full px-4 py-2 border border-gray-600 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500"
           />
         </div>
 
         <div>
-          <label
-            htmlFor="password"
-            className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-          >
+          <label htmlFor="password" className="block text-sm font-medium text-gray-300 mb-1">
             Пароль
           </label>
           <input
@@ -62,7 +56,7 @@ export default function Login() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-            className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 focus:ring-2 focus:ring-blue-500"
+            className="w-full px-4 py-2 border border-gray-600 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500"
           />
         </div>
 

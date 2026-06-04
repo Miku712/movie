@@ -29,17 +29,17 @@ export default function Home() {
 
   return (
     <div className="space-y-16">
-      <section className="bg-gradient-to-r from-blue-700 to-indigo-800 text-white rounded-2xl p-8 md:p-16 text-center shadow-xl">
+      <section className="bg-gradient-to-r from-gray-800 to-gray-700 text-white rounded-2xl p-8 md:p-16 text-center shadow-xl">
         <h1 className="text-2xl md:text-3xl font-bold mb-6">
           Шукай, оцінюй та зберігай улюблені фільми!
         </h1>
-        <p className="text-lg md:text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
+        <p className="text-lg md:text-xl text-gray-200 mb-8 max-w-2xl mx-auto">
           Створіть свій ідеальний список перегляду, залишайте відгуки та читайте думки інших
           кіноманів у нашому блозі.
         </p>
         <Link
           to="/catalog"
-          className="inline-block px-8 py-3 bg-white text-blue-700 font-bold rounded-full hover:bg-gray-100 transition-colors shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+          className="inline-block px-8 py-3 bg-indigo-600 text-white font-bold rounded-full hover:bg-indigo-700 transition-colors shadow-lg hover:shadow-xl transform hover:-translate-y-1"
         >
           Перейти до каталогу
         </Link>
@@ -47,8 +47,8 @@ export default function Home() {
 
       <section>
         <div className="flex justify-between items-center mb-8">
-          <h2 className="text-3xl font-bold">Рекомендовані тайтли</h2>
-          <Link to="/catalog" className="text-blue-600 hover:underline font-medium">
+          <h2 className="text-3xl font-bold text-white">Рекомендовані тайтли</h2>
+          <Link to="/catalog" className="text-indigo-400 hover:underline font-medium">
             Дивитись усі &rarr;
           </Link>
         </div>

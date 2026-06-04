@@ -74,20 +74,17 @@ export default function Blog() {
 
   return (
     <div className="max-w-4xl mx-auto py-8">
-      <h1 className="text-4xl font-bold mb-8 text-gray-900 dark:text-gray-100">Блог та рецензії</h1>
+      <h1 className="text-4xl font-bold mb-8 text-white">Блог та рецензії</h1>
 
       {/* Форма створення поста */}
       {user ? (
-        <div className="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg shadow-sm mb-12">
+        <div className="bg-gray-800 p-6 rounded-lg shadow-sm mb-12">
           <h2 className="text-2xl font-bold mb-4">Створити новий пост</h2>
           <form onSubmit={handleCreatePost} className="space-y-4">
             {error && <div className="text-red-500 text-sm mb-2">{error}</div>}
 
             <div>
-              <label
-                htmlFor="title"
-                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-              >
+              <label htmlFor="title" className="block text-sm font-medium text-gray-300 mb-1">
                 Назва
               </label>
               <input
@@ -95,16 +92,13 @@ export default function Blog() {
                 id="title"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-2 border border-gray-600 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Наприклад: Розбір кінцівки фільму Сталкер"
               />
             </div>
 
             <div>
-              <label
-                htmlFor="content"
-                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-              >
+              <label htmlFor="content" className="block text-sm font-medium text-gray-300 mb-1">
                 Текст
               </label>
               <textarea
@@ -112,7 +106,7 @@ export default function Blog() {
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
                 rows={5}
-                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                className="w-full px-4 py-2 border border-gray-600 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
                 placeholder="Напишіть ваші думки тут..."
               />
             </div>
@@ -126,7 +120,7 @@ export default function Blog() {
           </form>
         </div>
       ) : (
-        <div className="mb-12 p-4 bg-blue-50 dark:bg-blue-900/20 text-blue-800 dark:text-blue-300 rounded-lg border border-blue-100 dark:border-blue-800">
+        <div className="mb-12 p-4 bg-gray-800 text-gray-200 rounded-lg border border-gray-700">
           Увійдіть в акаунт, щоб мати можливість публікувати рецензії у блозі.{' '}
           <Link to="/login" className="font-bold underline">
             Увійти
@@ -142,13 +136,10 @@ export default function Blog() {
           </p>
         ) : (
           posts.map((post) => (
-            <article
-              key={post.id}
-              className="p-6 bg-white dark:bg-gray-900 rounded-lg shadow-sm border border-gray-100 dark:border-gray-800"
-            >
+            <article key={post.id} className="p-6 bg-gray-800 rounded-lg shadow-sm border border-gray-700">
               <div className="flex justify-between items-start mb-4">
                 <div>
-                  <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-1">
+                  <h3 className="text-2xl font-bold text-white mb-1">
                     {post.title}
                   </h3>
                   <div className="text-sm text-gray-500 dark:text-gray-400 space-x-2">
@@ -169,8 +160,8 @@ export default function Blog() {
                   </button>
                 )}
               </div>
-              <div className="prose dark:prose-invert max-w-none">
-                <p className="whitespace-pre-wrap text-gray-700 dark:text-gray-300">
+                <div className="prose dark:prose-invert max-w-none">
+                <p className="whitespace-pre-wrap text-gray-300">
                   {post.content}
                 </p>
               </div>

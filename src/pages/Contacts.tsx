@@ -61,7 +61,7 @@ export default function Contacts() {
 
   return (
     <div className="max-w-2xl mx-auto py-8">
-      <h1 className="text-4xl font-bold mb-8 text-gray-900 dark:text-gray-100">Контакти</h1>
+      <h1 className="text-4xl font-bold mb-8 text-white">Контакти</h1>
 
       {isSuccess && (
         <div
@@ -72,15 +72,9 @@ export default function Contacts() {
         </div>
       )}
 
-      <form
-        onSubmit={handleSubmit}
-        className="bg-gray-50 dark:bg-gray-800 p-8 rounded-lg shadow-sm space-y-6"
-      >
+      <form onSubmit={handleSubmit} className="bg-gray-800 p-8 rounded-lg shadow-sm space-y-6">
         <div>
-          <label
-            htmlFor="name"
-            className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-          >
+          <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-1">
             Ім'я
           </label>
           <input
@@ -88,10 +82,10 @@ export default function Contacts() {
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className={`w-full px-4 py-2 border rounded-lg bg-white dark:bg-gray-900 focus:outline-none focus:ring-2 ${
+            className={`w-full px-4 py-2 border rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 ${
               errors.name
                 ? 'border-red-500 focus:ring-red-500'
-                : 'border-gray-300 dark:border-gray-700 focus:ring-blue-500'
+                : 'border-gray-600 focus:ring-blue-500'
             }`}
             placeholder="Введіть ваше ім'я"
           />
@@ -99,10 +93,7 @@ export default function Contacts() {
         </div>
 
         <div>
-          <label
-            htmlFor="email"
-            className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-          >
+          <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-1">
             Email
           </label>
           <input
@@ -110,10 +101,10 @@ export default function Contacts() {
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className={`w-full px-4 py-2 border rounded-lg bg-white dark:bg-gray-900 focus:outline-none focus:ring-2 ${
+            className={`w-full px-4 py-2 border rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 ${
               errors.email
                 ? 'border-red-500 focus:ring-red-500'
-                : 'border-gray-300 dark:border-gray-700 focus:ring-blue-500'
+                : 'border-gray-600 focus:ring-blue-500'
             }`}
             placeholder="your.email@example.com"
           />
@@ -121,10 +112,7 @@ export default function Contacts() {
         </div>
 
         <div>
-          <label
-            htmlFor="message"
-            className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-          >
+          <label htmlFor="message" className="block text-sm font-medium text-gray-300 mb-1">
             Повідомлення
           </label>
           <textarea
@@ -132,10 +120,10 @@ export default function Contacts() {
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             rows={5}
-            className={`w-full px-4 py-2 border rounded-lg bg-white dark:bg-gray-900 focus:outline-none focus:ring-2 resize-none ${
+            className={`w-full px-4 py-2 border rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 resize-none ${
               errors.message
                 ? 'border-red-500 focus:ring-red-500'
-                : 'border-gray-300 dark:border-gray-700 focus:ring-blue-500'
+                : 'border-gray-600 focus:ring-blue-500'
             }`}
             placeholder="Ваше повідомлення (мінімум 10 символів)"
           />
@@ -145,7 +133,7 @@ export default function Contacts() {
         <button
           type="submit"
           disabled={!isFormValid || isSubmitting}
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition-colors disabled:bg-blue-400 disabled:cursor-not-allowed"
+          className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 px-4 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isSubmitting ? 'Відправка...' : 'Відправити'}
         </button>

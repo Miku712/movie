@@ -63,18 +63,15 @@ export default function CommentsSection({ movieId }: CommentsSectionProps) {
   };
 
   return (
-    <div className="mt-12 bg-gray-50 dark:bg-gray-800 p-6 rounded-lg shadow-sm">
-      <h3 className="text-2xl font-bold mb-6 text-gray-900 dark:text-gray-100">Коментарі</h3>
+    <div className="mt-12 bg-gray-800 p-6 rounded-lg shadow-sm">
+      <h3 className="text-2xl font-bold mb-6 text-white">Коментарі</h3>
 
       {user ? (
         <form onSubmit={handleSubmit} className="mb-8 space-y-4">
           {error && <div className="text-red-500 text-sm mb-2">{error}</div>}
 
           <div>
-            <label
-              htmlFor="text"
-              className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-            >
+            <label htmlFor="text" className="block text-sm font-medium text-gray-300 mb-1">
               Коментар
             </label>
             <textarea
@@ -82,7 +79,7 @@ export default function CommentsSection({ movieId }: CommentsSectionProps) {
               value={text}
               onChange={(e) => setText(e.target.value)}
               rows={4}
-              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+              className="w-full px-4 py-2 border border-gray-600 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
               placeholder="Напишіть ваш коментар тут..."
             />
           </div>
@@ -105,22 +102,20 @@ export default function CommentsSection({ movieId }: CommentsSectionProps) {
 
       <div className="space-y-4">
         {comments.length === 0 ? (
-          <p className="text-gray-500 dark:text-gray-400">
-            Поки що немає коментарів. Будьте першим!
-          </p>
+          <p className="text-gray-300">Поки що немає коментарів. Будьте першим!</p>
         ) : (
           comments.map((comment) => (
             <div
               key={comment.id}
-              className="p-4 bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700"
+              className="p-4 bg-gray-800 rounded-lg border border-gray-700"
             >
               <div className="flex justify-between items-center mb-2">
-                <span className="font-bold text-gray-900 dark:text-gray-100">{comment.author}</span>
-                <span className="text-xs text-gray-500 dark:text-gray-400">
+                <span className="font-bold text-white">{comment.author}</span>
+                <span className="text-xs text-gray-400">
                   {formatDate(comment.date)}
                 </span>
               </div>
-              <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">{comment.text}</p>
+              <p className="text-gray-300 whitespace-pre-wrap">{comment.text}</p>
             </div>
           ))
         )}

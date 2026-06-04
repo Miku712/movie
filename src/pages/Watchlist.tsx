@@ -46,9 +46,9 @@ export default function Watchlist() {
 
   return (
     <div className="max-w-6xl mx-auto">
-      <h1 className="text-3xl font-bold mb-8">Мій список перегляду</h1>
+      <h1 className="text-3xl font-bold mb-8 text-white">Мій список перегляду</h1>
 
-      <div className="flex space-x-2 border-b border-gray-200 dark:border-gray-700 mb-6">
+      <div className="flex space-x-2 border-b border-gray-700 mb-6">
         {tabs.map((tab) => (
           <button
             key={tab.id}
@@ -56,7 +56,7 @@ export default function Watchlist() {
             className={`px-4 py-2 font-medium transition-colors border-b-2 ${
               activeTab === tab.id
                 ? 'border-blue-600 text-blue-600 dark:text-blue-400 dark:border-blue-400'
-                : 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200'
+                : 'border-transparent text-gray-400 hover:text-gray-200'
             }`}
           >
             {tab.label}
@@ -65,9 +65,9 @@ export default function Watchlist() {
       </div>
 
       {filteredList.length === 0 ? (
-        <div className="text-center py-12 text-gray-500 dark:text-gray-400">
+        <div className="text-center py-12 text-gray-300">
           <p className="text-lg">Список порожній.</p>
-          <Link to="/catalog" className="inline-block mt-4 text-blue-600 hover:underline">
+          <Link to="/catalog" className="inline-block mt-4 text-indigo-400 hover:underline">
             Перейти до каталогу
           </Link>
         </div>
@@ -76,7 +76,7 @@ export default function Watchlist() {
           {filteredList.map(({ movie }) => (
             <div
               key={movie.id}
-              className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden flex flex-col"
+              className="bg-gray-800 rounded-lg shadow-sm border border-gray-700 overflow-hidden flex flex-col"
             >
               <Link
                 to={`/movie/${movie.id}`}
@@ -91,15 +91,15 @@ export default function Watchlist() {
               <div className="p-4 flex flex-col flex-grow">
                 <Link
                   to={`/movie/${movie.id}`}
-                  className="font-bold text-lg leading-tight mb-2 hover:text-blue-600 dark:hover:text-blue-400 line-clamp-2"
+                  className="font-bold text-lg leading-tight mb-2 hover:text-gray-200 line-clamp-2 text-white"
                 >
                   {movie.title}
                 </Link>
                 <div className="mt-auto pt-4 flex justify-between items-center">
-                  <span className="text-sm text-gray-500">{movie.releaseYear}</span>
+                  <span className="text-sm text-gray-400">{movie.releaseYear}</span>
                   <button
                     onClick={() => removeFromWatchlist(movie.id)}
-                    className="text-red-500 hover:text-red-700 text-sm font-medium"
+                    className="text-red-400 hover:text-red-600 text-sm font-medium"
                   >
                     Видалити
                   </button>
