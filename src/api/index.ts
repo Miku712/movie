@@ -57,3 +57,4 @@ export const getMovieDetails = async (id: string): Promise<Movie> => {
     throw new Error('Failed to fetch movie details', { cause: error });
   }
 };
+// force update

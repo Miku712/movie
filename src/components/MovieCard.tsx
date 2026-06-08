@@ -46,3 +46,4 @@ export default function MovieCard({ movie }: MovieCardProps) {
     </Link>
   );
 }
+// force update

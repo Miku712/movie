@@ -118,3 +118,4 @@ export default function CommentsSection({ movieId }: CommentsSectionProps) {
     </div>
   );
 }
+// force update

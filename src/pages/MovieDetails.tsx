@@ -232,3 +232,4 @@ export default function MovieDetails() {
     </article>
   );
 }
+// force update

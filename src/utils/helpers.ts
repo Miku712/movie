@@ -61,3 +61,4 @@ export const sortMedia = (movies: Movie[], sortBy: string): Movie[] => {
 
   return result;
 };
+// force update
